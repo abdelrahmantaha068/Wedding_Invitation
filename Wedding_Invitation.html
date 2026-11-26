@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>دعوة زفاف | Wedding Invitation</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700&family=Playfair+Display:wght@600&family=Great+Vibes&family=Cormorant+Garamond:ital,wght@1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="Wedding_Invitation.css">
+<script src="https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.23.9/babel.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const {useState,useEffect,useRef}=React;
+
+/* ===== عدّل البيانات هنا ===== */
+const CFG={
+  mono:"A&A",
+  names:{ar:["أمير","أسماء"],en:["Amir","Asmaa"]},
+  date:"2026-12-25T19:00:00+02:00",
+  venue:{ar:"قاعة ريفيرا - الهرم",en:"Riviera Hall - Haram"},
+  map:"https://maps.app.goo.gl/JxAmBAFbCJWwHbas8",
+  hero:"./assets/WhatsApp%20Image%202026-11-26%20at%208.42.01%20PM11.jpeg",
+  gallery:[
+    "./assets/2.jpeg",
+    "./assets/3.jpeg",
+    "./assets/A%20Tender%20Moment%20in%20the%20Mosque.jpg",
+    "./assets/Smiling%20Couple%20with%20Thumbs%20Up%20-%20Copy.png"
+  ],
+  story:[
+    ["2025-04-16",{ar:"أول لقاء",en:"First Meeting"},{ar:"بداية الحكاية",en:"Where it began"}],
+    ["2025-10-03",{ar:"الفاتحه",en:"Proposal"},{ar:"القلب اختار",en:"The heart chose"}],
+    ["2026-01-12",{ar:"الخطوبة",en:"Engagement"},{ar:"أحلى قرار",en:"Best decision"}],
+    ["2026-12-25",{ar:"يوم الزفاف",en:"Wedding Day"},{ar:"ومسك الختام",en:"The grand finale"}]
+  ]
+};
+const T={
+  ar:{tap:"اضغط على الختم لفتح الدعوة",view:"عرض الدعوة",std:"SAVE THE DATE",story:"قصتنا",gallery:"لحظاتنا",details:"تفاصيل الحفل",time:"الوقت",wdate:"يوم الزفاف",henna:"ليلة الحنة",where:"المكان",map:"افتح الخريطة 📍",foot:"بحب وفرحة ♥ نستناكم",d:["يوم","ساعة","دقيقة","ثانية"],done:"النهارده الفرح! ♥"},
+  en:{tap:"Tap the seal to open the invitation",view:"View Invitation",std:"SAVE THE DATE",story:"Our Love Story",gallery:"Moments",details:"Event Details",time:"Time",wdate:"Wedding Date",henna:"Henna Night",where:"Where",map:"Open Map 📍",foot:"With love ♥ see you there",d:["Days","Hours","Mins","Secs"],done:"It’s today! ♥"}
+};
+
+const Img=({src})=>src?<img src={src} alt=""/>:"♡";
+
+function Rv({as:Tag="div",className="",children,...p}){
+  const r=useRef(null),[on,set]=useState(false);
+  useEffect(()=>{
+    const io=new IntersectionObserver(([e])=>{if(e.isIntersecting){set(true);io.disconnect()}},{threshold:.15});
+    io.observe(r.current);return()=>io.disconnect();
+  },[]);
+  return <Tag ref={r} className={`rv ${on?"in":""} ${className}`} {...p}>{children}</Tag>;
+}
+
+function Countdown({t,when}){
+  const [now,setNow]=useState(Date.now());
+  useEffect(()=>{const i=setInterval(()=>setNow(Date.now()),1000);return()=>clearInterval(i)},[]);
+  const s=Math.floor((when-now)/1000);
+  if(s<=0)return <div className="cd"><div style={{gridColumn:"1/-1"}}>{t.done}</div></div>;
+  const v=[Math.floor(s/86400),Math.floor(s%86400/3600),Math.floor(s%3600/60),s%60];
+  return <div className="cd">{v.map((n,i)=><div key={i}><b>{String(n).padStart(2,"0")}</b><span>{t.d[i]}</span></div>)}</div>;
+}
+
+function Cover({t,nm,dateTxt,opened,gone,onOpen,onView}){
+  return (
+    <div id="cover" className={`${opened?"opened":""} ${gone?"open":""}`}>
+      <div className="ct">WEDDING INVITATION</div>
+      <div className={`env ${opened?"o":""}`} onClick={onOpen}>
+        <i className="l"/><i className="r"/><i className="b"/><i className="f"/>
+        <div className="paper">
+          <h3>{nm}</h3><small>{dateTxt}</small>
+          <button className="pill" onClick={e=>{e.stopPropagation();onView()}}>{t.view}</button>
+        </div>
+        <button className="seal" aria-label="open" onClick={e=>{e.stopPropagation();onOpen()}}>{CFG.mono}</button>
+      </div>
+      <div className="mute">{t.tap}</div>
+    </div>
+  );
+}
+
+function App(){
+  const [L,setL]=useState(()=>{try{return localStorage.getItem("l")||"ar"}catch(e){return"ar"}});
+  const [sw,setSw]=useState(false),[opened,setOpened]=useState(false),[gone,setGone]=useState(false),[lb,setLb]=useState(null);
+  const pg=useRef(null);
+  const audio=useRef(null);
+  const t=T[L],loc=L==="ar"?"ar-EG":"en-GB",when=new Date(CFG.date);
+  const fmt=(o,d=when)=>new Intl.DateTimeFormat(loc,o).format(d);
+  const [a,b]=CFG.names[L],nm=CFG.names[L].join(L==="ar"?" و ":" & ");
+
+  const startMusic=()=>{
+    if(!audio.current)return;
+    audio.current.volume=0.65;
+    const playPromise=audio.current.play();
+    if(playPromise)playPromise.catch(()=>{});
+  };
+  const openEnvelope=()=>{setOpened(true);startMusic()};
+  const viewInvitation=()=>{startMusic();setGone(true)};
+
+  useEffect(()=>{const d=document.documentElement;d.lang=L;d.dir=L==="ar"?"rtl":"ltr"},[L]);
+  useEffect(()=>{document.body.classList.toggle("sw",sw)},[sw]);
+  useEffect(()=>{document.body.classList.toggle("go",gone);document.body.style.overflow=gone?"":"hidden"},[gone]);
+  useEffect(()=>{
+    let k=0;
+    const f=()=>{if(k)return;k=requestAnimationFrame(()=>{k=0;const h=document.documentElement.scrollHeight-innerHeight;if(pg.current)pg.current.style.transform=`scaleX(${h>0?scrollY/h:0})`})};
+    addEventListener("scroll",f,{passive:true});return()=>removeEventListener("scroll",f);
+  },[]);
+  const toggle=()=>{setSw(true);setTimeout(()=>{const n=L==="ar"?"en":"ar";try{localStorage.setItem("l",n)}catch(e){}setL(n);setSw(false)},280)};
+
+  return (<>
+    <div className="bar"><button onClick={toggle}>{L==="ar"?"EN":"ع"}</button></div>
+    <div id="pg" ref={pg}/>
+    <Cover t={t} nm={nm} dateTxt={fmt({dateStyle:"medium"}).toUpperCase()} opened={opened} gone={gone} onOpen={openEnvelope} onView={viewInvitation}/>
+    <audio ref={audio} src="./music/Lelaaa.m4a" loop preload="auto"/>
+
+    <main>
+      <section id="hero">
+        <Rv className="oval"><div><Img src={CFG.hero}/></div></Rv>
+        <Rv className="hn">
+          <div className="std">{t.std}</div>
+          <h1 className="script names">{a}<span className="amp">&amp;</span>{b}</h1>
+          <div className="mute">{fmt({dateStyle:"full"})}</div>
+          <Countdown t={t} when={when}/>
+        </Rv>
+      </section>
+
+      <section>
+        <Rv as="h2" className="script">{t.story}</Rv>
+        <ul className="tl">
+          {CFG.story.map(([d,h,p],i)=>(
+            <Rv as="li" key={i}><small>{fmt({dateStyle:"medium"},new Date(d))}</small><h3>{h[L]}</h3><p>{p[L]}</p></Rv>
+          ))}
+        </ul>
+      </section>
+
+      <section>
+        <Rv as="h2" className="script">{t.gallery}</Rv>
+        <Rv className="gal">
+          {[0,1,2,3].map(i=><div key={i} onClick={()=>setLb(i)}><div className="ph"><Img src={CFG.gallery[i]}/></div></div>)}
+        </Rv>
+      </section>
+
+      <section>
+        <Rv as="h2" className="script">{t.details}</Rv>
+        <Rv className="dg">
+          <div className="card"><h3>{t.time}</h3><p>{fmt({timeStyle:"short"})}</p></div>
+          <div className="card"><h3>{t.wdate}</h3><p>{fmt({dateStyle:"full"})}</p></div>
+          {CFG.henna&&<div className="card"><h3>{t.henna}</h3><p>{CFG.henna[L]}</p></div>}
+          <div className="card"><h3>{t.where}</h3><p>{CFG.venue[L]}</p></div>
+        </Rv>
+        <div style={{marginTop:26}}><a className="btn" href={CFG.map} target="_blank" rel="noopener">{t.map}</a></div>
+      </section>
+    </main>
+
+    <footer>
+      <div>{t.foot}</div>
+      <div className="developer-credit">developed by Abdelrahman Taha</div>
+    </footer>
+    <div id="lb" className={lb!==null?"on":""} onClick={()=>setLb(null)}>
+      {lb!==null&&(CFG.gallery[lb]?<img src={CFG.gallery[lb]} alt=""/>:<span>♡</span>)}
+    </div>
+  </>);
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+
+</script>
+</body>
+</html>
