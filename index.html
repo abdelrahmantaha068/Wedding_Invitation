@@ -113,7 +113,8 @@ function App(){
     if(viewing)return;
     startMusic();
     setViewing(true);
-    setTimeout(()=>setGone(true),380);
+    const delay=window.matchMedia("(prefers-reduced-motion: reduce)").matches?0:620;
+    setTimeout(()=>setGone(true),delay);
   };
 
   useEffect(()=>{const d=document.documentElement;d.lang=L;d.dir=L==="ar"?"rtl":"ltr"},[L]);
