@@ -88,7 +88,7 @@ h2.script {
 }
 
 .ct {
-    transition: opacity .5s;
+    transition: opacity .35s ease;
     color: #ffc1d5;
     font: 600 .95rem Cairo, sans-serif;
     letter-spacing: .5em;
@@ -134,7 +134,7 @@ h2.script {
     background: #91415f;
     clip-path: polygon(0 0, 100% 0, 50% 50%);
     transform-origin: 50% 0;
-    transition: transform .9s cubic-bezier(.65, 0, .35, 1), z-index 0s .45s;
+    transition: transform .75s cubic-bezier(.22, 1, .36, 1), z-index 0s .38s;
     z-index: 5
 }
 
@@ -161,11 +161,14 @@ h2.script {
     touch-action: none;
     -webkit-tap-highlight-color: transparent;
     user-select: none;
+    transition: opacity .22s ease, transform .3s cubic-bezier(.22, 1, .36, 1);
     transform: translate(-50%, -50%)
 }
 
 .env.o .seal {
     animation: none;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(.8);
     pointer-events: none
 }
 
@@ -191,7 +194,7 @@ h2.script {
     gap: 6px;
     opacity: 0;
     transform: translateY(40%);
-    transition: opacity .6s .6s ease, transform 1s .6s cubic-bezier(.22, 1, .36, 1);
+    transition: opacity .42s .08s ease, transform .72s .08s cubic-bezier(.22, 1, .36, 1);
     pointer-events: none
 }
 
@@ -268,7 +271,8 @@ h2.script {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: 50% 62%
+    object-position: 50% 62%;
+    transition: filter .24s ease
 }
 
 .ph img {
@@ -414,6 +418,7 @@ h2.script {
     background: rgba(255, 226, 236, 0.08);
     backdrop-filter: blur(8px);
     overflow: hidden;
+    transition: transform .24s ease, border-color .24s ease, background-color .24s ease, box-shadow .24s ease;
 }
 
 .gal .ph {
@@ -433,6 +438,39 @@ h2.script {
     object-fit: contain;
     object-position: center;
     border-radius: 14px;
+    transition: filter .24s ease;
+}
+
+.gal > div:active {
+    transform: translateY(-2px);
+    border-color: rgba(255, 193, 213, .8);
+    background: rgba(255, 226, 236, .14);
+    box-shadow: 0 0 0 3px rgba(245, 167, 193, .14), 0 10px 24px rgba(0, 0, 0, .2);
+}
+
+.gal > div:active .ph img {
+    filter: brightness(1.08) saturate(1.04);
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .gal > div:hover {
+        transform: translateY(-3px);
+        border-color: rgba(255, 193, 213, .8);
+        background: rgba(255, 226, 236, .14);
+        box-shadow: 0 0 0 3px rgba(245, 167, 193, .14), 0 10px 24px rgba(0, 0, 0, .2);
+    }
+
+    .gal > div:hover .ph img {
+        filter: brightness(1.06) saturate(1.03);
+    }
+
+    .oval:hover img {
+        filter: brightness(1.06) saturate(1.03);
+    }
+}
+
+.oval:active img {
+    filter: brightness(1.08) saturate(1.04);
 }
 
 /* Mobile */
@@ -498,6 +536,42 @@ h2.script {
     border: 1px solid var(--acc)
 }
 
+.card,
+.cd div,
+.btn,
+.bar button,
+.pill {
+    transition: transform .24s ease, box-shadow .24s ease, border-color .24s ease, background-color .24s ease, filter .24s ease
+}
+
+.tl li {
+    transition: opacity .55s ease, transform .65s cubic-bezier(.22, 1, .36, 1)
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .card:hover,
+    .cd div:hover,
+    .btn:hover,
+    .bar button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 22px rgba(0, 0, 0, .2)
+    }
+
+    .btn:hover,
+    .bar button:hover,
+    .pill:hover {
+        filter: brightness(1.08)
+    }
+
+    .tl li:hover {
+        transform: translateY(-2px)
+    }
+}
+
+.pill:active {
+    filter: brightness(1.12)
+}
+
 .rs {
     max-width: 420px;
     margin: 0 auto
@@ -520,9 +594,14 @@ option {
 }
 
 .rv {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity .55s ease, transform .65s cubic-bezier(.22, 1, .36, 1)
+}
+
+.rv.in {
     opacity: 1;
-    transform: none;
-    transition: none
+    transform: none
 }
 
 body:not(.go) #hero .rv {
@@ -602,6 +681,17 @@ main {
     transition: opacity .28s ease
 }
 
+body.go main {
+    animation: invitationReveal .45s cubic-bezier(.22, 1, .36, 1) both
+}
+
+@keyframes invitationReveal {
+    from {
+        opacity: 0;
+        transform: translateY(10px)
+    }
+}
+
 body.sw main {
     opacity: 0
 }
@@ -617,7 +707,7 @@ body.sw main {
 .paper>* {
     opacity: 0;
     transform: translateY(12px);
-    transition: opacity .6s, transform .9s cubic-bezier(.22, 1, .36, 1)
+    transition: opacity .35s ease, transform .45s cubic-bezier(.22, 1, .36, 1)
 }
 
 .env.o .paper>* {
@@ -626,15 +716,15 @@ body.sw main {
 }
 
 .env.o .paper>:nth-child(1) {
-    transition-delay: 1.2s
+    transition-delay: .14s
 }
 
 .env.o .paper>:nth-child(2) {
-    transition-delay: 1.35s
+    transition-delay: .22s
 }
 
 .env.o .paper>:nth-child(3) {
-    transition-delay: 1.5s
+    transition-delay: .3s
 }
 
 .pill {
@@ -646,7 +736,7 @@ body.sw main {
 }
 
 .pill.viewing {
-    animation: viewPress .34s ease both
+    animation: viewPress .38s cubic-bezier(.22, 1, .36, 1) both
 }
 
 @keyframes viewPress {
@@ -699,6 +789,10 @@ body.sw main {
         transform: none !important
     }
 
+    .gal > div:active {
+        transform: none
+    }
+
     .names {
         -webkit-text-fill-color: #fff
     }
@@ -743,7 +837,7 @@ body.sw main {
     .paper {
         top: -42%;
         height: 84%;
-        transition-duration: .65s, .65s
+        transition-duration: .55s, .65s
     }
 
     .env.o .paper {
@@ -751,19 +845,19 @@ body.sw main {
     }
 
     .paper>* {
-        transition-duration: .45s, .45s
+        transition-duration: .32s, .4s
     }
 
     .env.o .paper>:nth-child(1) {
-        transition-delay: .35s
+        transition-delay: .14s
     }
 
     .env.o .paper>:nth-child(2) {
-        transition-delay: .43s
+        transition-delay: .22s
     }
 
     .env.o .paper>:nth-child(3) {
-        transition-delay: .51s
+        transition-delay: .3s
     }
 
     .paper h3 {
@@ -904,6 +998,27 @@ body.sw main {
         transform: none;
         box-shadow: none
     }
+}
+/* إزالة تظليل/إطار اللمس */
+*{-webkit-tap-highlight-color:transparent}
+.env{cursor:default;-webkit-touch-callout:none;user-select:none}
+button{-webkit-appearance:none;appearance:none;outline:none}
+button:focus,button:focus-visible,button:active{outline:none;box-shadow:none}
+
+/* الزرار بعد الفتح يفضل بنفس شكله */
+.seal:disabled,.pill:disabled{opacity:1;color:#fff}
+.seal,.pill{touch-action:manipulation}
+
+/* ثبات الطبقات في Safari */
+.env{transform-style:flat;isolation:isolate}
+.env .f{backface-visibility:visible;-webkit-backface-visibility:visible;will-change:transform}
+.paper{will-change:transform,opacity}
+
+/* الموبايل */
+@media (max-width:700px){
+  #cover{height:100vh;height:100dvh;gap:18px}
+  .env{margin-top:90px}
+  .seal{width:64px;height:64px;font-size:1.45rem;padding:0}
 }
 /* إزالة تظليل/إطار اللمس */
 *{-webkit-tap-highlight-color:transparent}

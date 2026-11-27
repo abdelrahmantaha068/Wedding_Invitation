@@ -46,6 +46,7 @@ const Img=({src})=>src?<img src={src} alt=""/>:"♡";
 function Rv({as:Tag="div",className="",children,...p}){
   const r=useRef(null),[on,set]=useState(false);
   useEffect(()=>{
+    if(!("IntersectionObserver" in window)){set(true);return}
     const io=new IntersectionObserver(([e])=>{if(e.isIntersecting){set(true);io.disconnect()}},{threshold:.15});
     io.observe(r.current);return()=>io.disconnect();
   },[]);
@@ -112,7 +113,7 @@ function App(){
     if(viewing)return;
     startMusic();
     setViewing(true);
-    setTimeout(()=>setGone(true),340);
+    setTimeout(()=>setGone(true),380);
   };
 
   useEffect(()=>{const d=document.documentElement;d.lang=L;d.dir=L==="ar"?"rtl":"ltr"},[L]);
