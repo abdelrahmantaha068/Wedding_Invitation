@@ -1020,6 +1020,84 @@ button:focus,button:focus-visible,button:active{outline:none;box-shadow:none}
   .env{margin-top:90px}
   .seal{width:64px;height:64px;font-size:1.45rem;padding:0}
 }
+
+@media (prefers-reduced-motion: no-preference) {
+    .rv.in.hn > .std,
+    .rv.in.hn > .names,
+    .rv.in.hn > .mute {
+        animation: textEnter .65s cubic-bezier(.22, 1, .36, 1) both;
+    }
+
+    .rv.in.hn > .names {
+        animation-delay: .08s;
+    }
+
+    .rv.in.hn > .mute {
+        animation-delay: .16s;
+    }
+
+    .rv.in.oval img {
+        animation: imageEnter .9s cubic-bezier(.22, 1, .36, 1) both;
+    }
+
+    .gal.in > div,
+    .dg.in > .card {
+        animation: cardEnter .65s cubic-bezier(.22, 1, .36, 1) both;
+        animation-delay: calc(var(--i, 0) * 90ms);
+    }
+
+    .gal.in > div .ph img {
+        animation: imageEnter .85s .1s cubic-bezier(.22, 1, .36, 1) both;
+    }
+
+    @keyframes textEnter {
+        from {
+            opacity: 0;
+            transform: translateY(14px);
+        }
+    }
+
+    @keyframes imageEnter {
+        from {
+            opacity: .7;
+            transform: scale(1.06);
+        }
+    }
+
+    @keyframes cardEnter {
+        from {
+            opacity: 0;
+            transform: translateY(16px) scale(.98);
+        }
+    }
+
+    @media (hover: none) {
+        .seal:active,
+        .pill:active,
+        .bar button:active,
+        .btn:active {
+            transform: scale(.96);
+            filter: brightness(1.12);
+        }
+
+        .card:active,
+        .cd div:active,
+        .tl li:active {
+            transform: scale(.99);
+            box-shadow: 0 0 0 3px rgba(245, 167, 193, .14);
+        }
+
+        .gal > div:active {
+            transform: translateY(1px) scale(.97);
+        }
+
+        .gal > div:active .ph img,
+        .oval:active img {
+            transform: scale(1.04);
+            filter: brightness(1.08) saturate(1.04);
+        }
+    }
+}
 /* إزالة تظليل/إطار اللمس */
 *{-webkit-tap-highlight-color:transparent}
 .env{cursor:default;-webkit-touch-callout:none;user-select:none}
