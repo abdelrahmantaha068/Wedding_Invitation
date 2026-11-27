@@ -418,8 +418,7 @@ h2.script {
     background: rgba(255, 226, 236, 0.08);
     backdrop-filter: blur(8px);
     overflow: hidden;
-    cursor: zoom-in;
-    transition: all 0.4s ease;
+    transition: border-color 0.4s ease, box-shadow 0.4s ease;
 }
 
 .gal .ph {
@@ -439,17 +438,11 @@ h2.script {
     object-fit: contain;
     object-position: center;
     border-radius: 14px;
-    transition: transform .8s cubic-bezier(.22, 1, .36, 1);
 }
 
 .gal > div:hover {
-    transform: translateY(-7px);
     border-color: #ffc1d5;
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
-}
-
-.gal > div:hover .ph img {
-    transform: scale(1.07);
 }
 
 /* Mobile */
@@ -611,19 +604,13 @@ html[dir=rtl] {
 @keyframes envIn {
     from {
         opacity: 0;
-        transform: translateY(50px) scale(.92)
+        transform: translateY(50px)
     }
 }
 
 @keyframes bob {
     50% {
         translate: 0 -8px
-    }
-}
-
-@keyframes float {
-    50% {
-        translate: 0 -12px
     }
 }
 
@@ -636,20 +623,13 @@ html[dir=rtl] {
 @keyframes pop {
     from {
         opacity: 0;
-        transform: translateY(34px) scale(.95)
+        transform: translateY(24px)
     }
 }
 
 @keyframes drift {
     to {
         background-position: 90px 180px
-    }
-}
-
-@keyframes zoomIn {
-    from {
-        opacity: 0;
-        transform: scale(.88)
     }
 }
 
@@ -698,11 +678,10 @@ body.sw main {
 }
 
 .bar button {
-    transition: transform .3s, background .3s
+    transition: background .3s
 }
 
 .bar button:hover {
-    transform: scale(1.08);
     background: rgba(145, 65, 95, .92)
 }
 
@@ -725,11 +704,7 @@ body.sw main {
 }
 
 .seal {
-    transition: transform .45s cubic-bezier(.22, 1, .36, 1), box-shadow .4s
-}
-
-.seal:hover {
-    transform: translate(-50%, -50%) scale(1.1)
+    transition: box-shadow .4s
 }
 
 .paper>* {
@@ -756,7 +731,11 @@ body.sw main {
 }
 
 .pill {
-    transition: transform .3s cubic-bezier(.22, 1, .36, 1), box-shadow .3s, background .3s
+    min-width: 154px;
+    min-height: 48px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform .2s ease, box-shadow .3s, background .3s
 }
 
 .pill:hover {
@@ -766,19 +745,19 @@ body.sw main {
 }
 
 .pill:active {
-    transform: scale(.95)
+    transform: translateY(2px)
 }
 
-.oval {
-    animation: float 7s ease-in-out infinite
+.pill.viewing {
+    animation: viewPress .34s ease both
 }
 
-.oval>div {
-    transition: transform .8s cubic-bezier(.22, 1, .36, 1)
-}
-
-.oval:hover>div {
-    transform: scale(1.04)
+@keyframes viewPress {
+    45% {
+        transform: translateY(2px);
+        filter: brightness(1.15);
+        box-shadow: 0 0 0 4px rgba(245, 167, 193, .26)
+    }
 }
 
 .names {
@@ -792,7 +771,7 @@ body.sw main {
 }
 
 h2.script.rv {
-    transform: translateY(20px) scale(.96);
+    transform: translateY(20px);
     letter-spacing: .08em;
     transition: opacity 1s, transform 1s cubic-bezier(.22, 1, .36, 1), letter-spacing 1.4s cubic-bezier(.22, 1, .36, 1)
 }
@@ -820,12 +799,12 @@ h2.script.rv.in {
 }
 
 .tl li:before {
-    transform: scale(0);
-    transition: transform .7s cubic-bezier(.34, 1.56, .64, 1) .35s, box-shadow .4s
+    opacity: 0;
+    transition: opacity .7s ease .2s, box-shadow .4s
 }
 
 .tl li.in:before {
-    transform: scale(1);
+    opacity: 1;
     box-shadow: 0 0 0 6px rgba(245, 167, 193, .18)
 }
 
@@ -870,16 +849,7 @@ h2.script.rv.in {
 }
 
 .btn:active {
-    transform: scale(.95)
-}
-
-#lb.on {
-    animation: fadeIn .35s ease
-}
-
-#lb.on img,
-#lb.on span {
-    animation: zoomIn .5s cubic-bezier(.22, 1, .36, 1)
+    transform: translateY(2px)
 }
 
 @media (prefers-reduced-motion:reduce) {
@@ -902,22 +872,61 @@ h2.script.rv.in {
 }
 
 @media (max-width: 700px) {
+    body {
+        line-height: 1.8
+    }
+
     section {
-        padding: 54px 16px
+        padding: 48px 18px
+    }
+
+    h2.script {
+        font-size: clamp(2.1rem, 8.5vw, 2.8rem);
+        margin-bottom: 24px
+    }
+
+    .ct {
+        max-width: calc(100vw - 32px);
+        font-size: .82rem;
+        letter-spacing: .28em;
+        padding-inline-start: .28em
     }
 
     #cover {
-        gap: 24px
+        gap: 24px;
+        transition-duration: .85s, .6s
     }
 
     .env {
         width: min(78vw, 340px);
-        margin-top: 70px
+        margin-top: 70px;
+        animation-duration: .8s, 5s
+    }
+
+    .env .f {
+        transition-duration: .65s, 0s
     }
 
     .paper {
         top: -42%;
-        height: 84%
+        height: 84%;
+        transition-duration: .65s, .65s
+    }
+
+    .paper>* {
+        transition-duration: .45s, .45s
+    }
+
+    .env.o .paper>:nth-child(1) {
+        transition-delay: .35s
+    }
+
+    .env.o .paper>:nth-child(2) {
+        transition-delay: .43s
+    }
+
+    .env.o .paper>:nth-child(3) {
+        transition-delay: .51s
     }
 
     .paper h3 {
@@ -941,22 +950,66 @@ h2.script.rv.in {
     }
 
     .names {
-        font-size: clamp(2.5rem, 10vw, 3.5rem)
+        font-size: clamp(2.35rem, 9vw, 3rem);
+        line-height: 1.6;
+        padding-block: .08em
+    }
+
+    .names .amp {
+        margin: 0
+    }
+
+    html[lang=ar] .names {
+        font-family: Amiri, serif;
+        font-weight: 700;
+        background: none;
+        -webkit-text-fill-color: var(--ink);
+        color: var(--ink);
+        animation: none
+    }
+
+    .std {
+        font-size: .78rem;
+        letter-spacing: .24em;
+        padding-inline-start: .24em
     }
 
     .cd {
-        width: min(100%, 340px)
+        width: min(100%, 340px);
+        gap: 8px;
+        margin-top: 20px
+    }
+
+    .cd div {
+        min-width: 0;
+        padding: 8px 2px
+    }
+
+    .cd b {
+        font-size: clamp(1.15rem, 5.8vw, 1.45rem)
+    }
+
+    .cd span {
+        font-size: .68rem;
+        white-space: nowrap
     }
 
     .tl:before {
-        left: 12px
+        left: auto;
+        inset-inline-start: 12px
     }
 
     .tl li,
     .tl li:nth-child(even) {
         width: 100%;
         margin-inline-start: 0;
+        padding: 0 8px 30px;
         padding-inline: 38px 8px;
+        text-align: start
+    }
+
+    .tl li:nth-child(odd),
+    .tl li:nth-child(even) {
         text-align: start
     }
 
@@ -975,12 +1028,63 @@ h2.script.rv.in {
         translate: 0 0
     }
 
+    .rv {
+        transition-duration: .6s
+    }
+
+    h2.script.rv {
+        transition-duration: .6s, .6s, .8s
+    }
+
+    .tl li.rv:nth-child(odd),
+    .tl li.rv:nth-child(even) {
+        transform: translateY(18px)
+    }
+
+    .tl li.rv.in {
+        transform: none
+    }
+
+    .tl small {
+        display: block;
+        margin-bottom: 3px;
+        font-family: Cairo, system-ui, sans-serif;
+        font-size: .78rem;
+        line-height: 1.6
+    }
+
+    .tl h3 {
+        font-size: 1rem;
+        line-height: 1.5
+    }
+
+    .tl p {
+        margin-top: 4px;
+        font-size: .88rem;
+        line-height: 1.7
+    }
+
     .dg {
         grid-template-columns: 1fr
     }
 
+    .card {
+        padding: 22px 16px
+    }
+
     .btn,
     .pill {
-        min-height: 44px
+        min-height: 48px
+    }
+}
+
+@media (hover: none) {
+    .card:hover,
+    .btn:hover,
+    .pill:hover,
+    .bar button:hover,
+    .seal:hover {
+        transform: none;
+        box-shadow: none
     }
 }
