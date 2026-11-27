@@ -41,7 +41,7 @@ const T={
   en:{tap:"Tap the seal to open the invitation",view:"View Invitation",std:"SAVE THE DATE",story:"Our Love Story",gallery:"Moments",details:"Event Details",time:"Time",wdate:"Wedding Date",henna:"Henna Night",where:"Where",map:"Open Map 📍",foot:"With love ♥ see you there",d:["Days","Hours","Mins","Secs"],done:"It’s today! ♥"}
 };
 
-const Img=({src})=>src?<img src={src} alt=""/>:"♡";
+const Img=({src})=>src?<img src={src} alt="" draggable="false" onContextMenu={e=>e.preventDefault()}/>:"♡";
 
 function Rv({as:Tag="div",className="",children,...p}){
   const r=useRef(null),[on,set]=useState(false);
