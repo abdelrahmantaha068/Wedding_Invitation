@@ -71,7 +71,24 @@ function App() {
   const t = T[L], loc = L === "ar" ? "ar-EG" : "en-GB", when = new Date(CFG.date);
   const fmt = (o, d = when) => new Intl.DateTimeFormat(loc, o).format(d);
   const [a, b] = CFG.names[L], nm = CFG.names[L].join(L === "ar" ? " و " : " & ");
-
+  useEffect(() => {
+  const stop = e => e.preventDefault();
+  const keys = e => {
+    const k = e.key.toLowerCase();
+    if ((e.ctrlKey || e.metaKey) && ["s", "p", "u"].includes(k)) e.preventDefault();
+    if (e.key === "PrintScreen") {
+      try { navigator.clipboard.writeText("") } catch (err) { }
+    }
+  };
+  document.addEventListener("contextmenu", stop);
+  document.addEventListener("dragstart", stop);
+  document.addEventListener("keydown", keys);
+  return () => {
+    document.removeEventListener("contextmenu", stop);
+    document.removeEventListener("dragstart", stop);
+    document.removeEventListener("keydown", keys);
+  };
+}, []);
   useEffect(() => { const d = document.documentElement; d.lang = L; d.dir = L === "ar" ? "rtl" : "ltr" }, [L]);
   useEffect(() => { document.body.classList.toggle("sw", sw) }, [sw]);
   useEffect(() => { document.body.classList.toggle("go", gone); document.body.style.overflow = gone ? "" : "hidden" }, [gone]);

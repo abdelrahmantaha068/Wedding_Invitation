@@ -1219,3 +1219,24 @@ main img {
     user-select: none;
     -webkit-touch-callout: none;
 }
+/* الصورة نفسها متستقبلش لمس = مفيش long-press لحفظها */
+main img, .lb img {
+  pointer-events: none;
+  -webkit-user-drag: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* طبقة شفافة فوق الصور تاخد اللمس بدلها */
+.ph, .oval div { position: relative; }
+.ph::after, .oval div::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+/* منع الطباعة / Save as PDF */
+@media print {
+  html, body { display: none !important; }
+}
