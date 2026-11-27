@@ -62,16 +62,30 @@ function Countdown({t,when}){
 }
 
 function Cover({t,nm,dateTxt,opened,gone,viewing,onOpen,onView}){
+  const lastTouch=useRef(null);
+  const handlePointerUp=(e,action)=>{
+    if(e.pointerType!=="touch"){lastTouch.current=null;return}
+    e.preventDefault();
+    e.stopPropagation();
+    lastTouch.current={x:e.clientX,y:e.clientY,time:Date.now()};
+    action();
+  };
+  const handleClick=(e,action)=>{
+    e.stopPropagation();
+    const touch=lastTouch.current;
+    if(touch&&Date.now()-touch.time<750&&Math.abs(touch.x-e.clientX)<24&&Math.abs(touch.y-e.clientY)<24){lastTouch.current=null;return}
+    action();
+  };
   return (
     <div id="cover" className={`${opened?"opened":""} ${gone?"open":""}`}>
       <div className="ct">WEDDING INVITATION</div>
-      <div className={`env ${opened?"o":""}`} onClick={opened?undefined:onOpen}>
+      <div className={`env ${opened?"o":""}`}>
         <i className="l"/><i className="r"/><i className="b"/><i className="f"/>
         <div className="paper">
           <h3>{nm}</h3><small>{dateTxt}</small>
-          <button className={`pill ${viewing?"viewing":""}`} disabled={viewing} onClick={e=>{e.stopPropagation();onView()}}>{t.view}</button>
+          <button className={`pill ${viewing?"viewing":""}`} disabled={viewing} onPointerUp={e=>handlePointerUp(e,onView)} onClick={e=>handleClick(e,onView)}>{t.view}</button>
         </div>
-        <button className="seal" aria-label="open" disabled={opened} onClick={e=>{e.stopPropagation();onOpen()}}>{CFG.mono}</button>
+        <button className="seal" aria-label="open" disabled={opened} onPointerUp={e=>handlePointerUp(e,onOpen)} onClick={e=>handleClick(e,onOpen)}>{CFG.mono}</button>
       </div>
       <div className="mute">{t.tap}</div>
     </div>

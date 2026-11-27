@@ -80,11 +80,10 @@ h2.script {
     justify-content: center;
     gap: 44px;
     text-align: center;
-    transition: opacity .35s ease
 }
 
 #cover.open {
-    opacity: 0;
+    display: none;
     pointer-events: none
 }
 
@@ -159,8 +158,10 @@ h2.script {
     font: italic 700 1.75rem 'Cormorant Garamond', Georgia, serif;
     white-space: nowrap;
     direction: ltr;
-    transform: translate(-50%, -50%);
-    animation: pulse 2.4s ease-in-out infinite
+    touch-action: none;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    transform: translate(-50%, -50%)
 }
 
 .env.o .seal {
@@ -170,12 +171,6 @@ h2.script {
 
 #cover.opened .ct {
     opacity: 0
-}
-
-@keyframes pulse {
-    50% {
-        box-shadow: 0 0 0 10px rgba(245, 167, 193, .22)
-    }
 }
 
 .paper {
@@ -419,7 +414,6 @@ h2.script {
     background: rgba(255, 226, 236, 0.08);
     backdrop-filter: blur(8px);
     overflow: hidden;
-    transition: border-color 0.4s ease, box-shadow 0.4s ease;
 }
 
 .gal .ph {
@@ -439,11 +433,6 @@ h2.script {
     object-fit: contain;
     object-position: center;
     border-radius: 14px;
-}
-
-.gal > div:hover {
-    border-color: #ffc1d5;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
 }
 
 /* Mobile */
@@ -531,23 +520,14 @@ option {
 }
 
 .rv {
-    opacity: 0;
-    transform: translateY(28px);
-    transition: opacity .9s ease, transform .9s cubic-bezier(.22, 1, .36, 1)
-}
-
-.rv.in {
     opacity: 1;
-    transform: none
+    transform: none;
+    transition: none
 }
 
 body:not(.go) #hero .rv {
     opacity: 0;
     transform: translateY(28px)
-}
-
-#hero .hn {
-    transition-delay: .25s
 }
 
 @media (prefers-reduced-motion:reduce) {
@@ -595,57 +575,6 @@ html[dir=rtl] {
     --d: 1
 }
 
-@keyframes fadeUp {
-    from {
-        opacity: 0;
-        transform: translateY(18px)
-    }
-}
-
-@keyframes envIn {
-    from {
-        opacity: 0;
-        transform: translateY(50px)
-    }
-}
-
-@keyframes bob {
-    50% {
-        translate: 0 -8px
-    }
-}
-
-@keyframes shine {
-    to {
-        background-position: -200% 0
-    }
-}
-
-@keyframes pop {
-    from {
-        opacity: 0;
-        transform: translateY(24px)
-    }
-}
-
-@keyframes drift {
-    to {
-        background-position: 90px 180px
-    }
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0
-    }
-}
-
-@keyframes grow {
-    from {
-        transform: scaleY(0)
-    }
-}
-
 body:before {
     content: "";
     position: fixed;
@@ -654,8 +583,7 @@ body:before {
     pointer-events: none;
     opacity: .55;
     background-image: radial-gradient(circle, rgba(255, 255, 255, .16) 1.5px, transparent 2.2px);
-    background-size: 90px 90px;
-    animation: drift 50s linear infinite
+    background-size: 90px 90px
 }
 
 #pg {
@@ -686,28 +614,6 @@ body.sw main {
     background: rgba(145, 65, 95, .92)
 }
 
-.ct,
-#cover>.mute {
-    animation: fadeUp 1s .35s backwards
-}
-
-.env {
-    animation: envIn 1.1s cubic-bezier(.22, 1, .36, 1) backwards, bob 5s 1.2s ease-in-out infinite;
-    transition: box-shadow .4s
-}
-
-.env:hover {
-    box-shadow: 0 40px 60px rgba(0, 0, 0, .5)
-}
-
-.env.o {
-    animation: none
-}
-
-.seal {
-    transition: box-shadow .4s
-}
-
 .paper>* {
     opacity: 0;
     transform: translateY(12px);
@@ -734,19 +640,9 @@ body.sw main {
 .pill {
     min-width: 154px;
     min-height: 48px;
-    touch-action: manipulation;
+    touch-action: none;
     -webkit-tap-highlight-color: transparent;
-    transition: transform .2s ease, box-shadow .3s, background .3s
-}
-
-.pill:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(61, 29, 44, .28);
-    background: #5f2a40
-}
-
-.pill:active {
-    transform: translateY(2px)
+    user-select: none
 }
 
 .pill.viewing {
@@ -767,51 +663,11 @@ body.sw main {
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    color: transparent;
-    animation: shine 7s linear infinite
-}
-
-h2.script.rv {
-    transform: translateY(20px);
-    letter-spacing: .08em;
-    transition: opacity 1s, transform 1s cubic-bezier(.22, 1, .36, 1), letter-spacing 1.4s cubic-bezier(.22, 1, .36, 1)
-}
-
-h2.script.rv.in {
-    letter-spacing: 0;
-    transform: none
-}
-
-.tl:before {
-    transform-origin: top;
-    animation: grow 1.8s .3s cubic-bezier(.65, 0, .35, 1) backwards
-}
-
-.tl li.rv:nth-child(odd) {
-    transform: translateX(calc(var(--d)*-44px))
-}
-
-.tl li.rv:nth-child(even) {
-    transform: translateX(calc(var(--d)*44px))
-}
-
-.tl li.rv.in {
-    transform: none
+    color: transparent
 }
 
 .tl li:before {
-    opacity: 0;
-    transition: opacity .7s ease .2s, box-shadow .4s
-}
-
-.tl li.in:before {
     opacity: 1;
-    box-shadow: 0 0 0 6px rgba(245, 167, 193, .18)
-}
-
-.gal.in>div,
-.dg.in>.card {
-    animation: pop .9s cubic-bezier(.22, 1, .36, 1) calc(var(--i, 0)*.14s) backwards
 }
 
 .gal>:nth-child(2),
@@ -827,30 +683,6 @@ h2.script.rv.in {
 .gal>:nth-child(4),
 .dg>:nth-child(4) {
     --i: 3
-}
-
-.card {
-    transition: transform .45s cubic-bezier(.22, 1, .36, 1), border-color .4s, background .4s, box-shadow .4s
-}
-
-.card:hover {
-    transform: translateY(-7px);
-    border-color: #ffc1d5;
-    background: rgba(255, 226, 236, .11);
-    box-shadow: 0 14px 30px rgba(0, 0, 0, .25)
-}
-
-.btn {
-    transition: transform .35s cubic-bezier(.22, 1, .36, 1), box-shadow .35s, background .3s
-}
-
-.btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 22px rgba(0, 0, 0, .3)
-}
-
-.btn:active {
-    transform: translateY(2px)
 }
 
 @media (prefers-reduced-motion:reduce) {
@@ -888,6 +720,8 @@ h2.script.rv.in {
 
     .ct {
         max-width: calc(100vw - 32px);
+        margin-bottom: 6px;
+        transform: translateY(-30px);
         font-size: .82rem;
         letter-spacing: .28em;
         padding-inline-start: .28em
@@ -899,8 +733,7 @@ h2.script.rv.in {
 
     .env {
         width: min(78vw, 340px);
-        margin-top: 70px;
-        animation-duration: .8s, 5s
+        margin-top: 70px
     }
 
     .env .f {
@@ -911,6 +744,10 @@ h2.script.rv.in {
         top: -42%;
         height: 84%;
         transition-duration: .65s, .65s
+    }
+
+    .env.o .paper {
+        transform: translateY(-44px)
     }
 
     .paper>* {
@@ -1028,23 +865,6 @@ h2.script.rv.in {
         translate: 0 0
     }
 
-    .rv {
-        transition-duration: .6s
-    }
-
-    h2.script.rv {
-        transition-duration: .6s, .6s, .8s
-    }
-
-    .tl li.rv:nth-child(odd),
-    .tl li.rv:nth-child(even) {
-        transform: translateY(18px)
-    }
-
-    .tl li.rv.in {
-        transform: none
-    }
-
     .tl small {
         display: block;
         margin-bottom: 3px;
@@ -1079,12 +899,30 @@ h2.script.rv.in {
 }
 
 @media (hover: none) {
-    .card:hover,
-    .btn:hover,
-    .pill:hover,
     .bar button:hover,
     .seal:hover {
         transform: none;
         box-shadow: none
     }
+}
+/* إزالة تظليل/إطار اللمس */
+*{-webkit-tap-highlight-color:transparent}
+.env{cursor:default;-webkit-touch-callout:none;user-select:none}
+button{-webkit-appearance:none;appearance:none;outline:none}
+button:focus,button:focus-visible,button:active{outline:none;box-shadow:none}
+
+/* الزرار بعد الفتح يفضل بنفس شكله */
+.seal:disabled,.pill:disabled{opacity:1;color:#fff}
+.seal,.pill{touch-action:manipulation}
+
+/* ثبات الطبقات في Safari */
+.env{transform-style:flat;isolation:isolate}
+.env .f{backface-visibility:visible;-webkit-backface-visibility:visible;will-change:transform}
+.paper{will-change:transform,opacity}
+
+/* الموبايل */
+@media (max-width:700px){
+  #cover{height:100vh;height:100dvh;gap:18px}
+  .env{margin-top:90px}
+  .seal{width:64px;height:64px;font-size:1.45rem;padding:0}
 }
