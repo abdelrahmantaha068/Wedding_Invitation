@@ -65,13 +65,13 @@ function Cover({t,nm,dateTxt,opened,gone,viewing,onOpen,onView}){
   return (
     <div id="cover" className={`${opened?"opened":""} ${gone?"open":""}`}>
       <div className="ct">WEDDING INVITATION</div>
-      <div className={`env ${opened?"o":""}`} onClick={onOpen}>
+      <div className={`env ${opened?"o":""}`} onClick={opened?undefined:onOpen}>
         <i className="l"/><i className="r"/><i className="b"/><i className="f"/>
         <div className="paper">
           <h3>{nm}</h3><small>{dateTxt}</small>
           <button className={`pill ${viewing?"viewing":""}`} disabled={viewing} onClick={e=>{e.stopPropagation();onView()}}>{t.view}</button>
         </div>
-        <button className="seal" aria-label="open" onClick={e=>{e.stopPropagation();onOpen()}}>{CFG.mono}</button>
+        <button className="seal" aria-label="open" disabled={opened} onClick={e=>{e.stopPropagation();onOpen()}}>{CFG.mono}</button>
       </div>
       <div className="mute">{t.tap}</div>
     </div>
