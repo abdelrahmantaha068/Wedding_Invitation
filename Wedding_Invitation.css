@@ -1022,21 +1022,21 @@ button:focus,button:focus-visible,button:active{outline:none;box-shadow:none}
 }
 
 @media (prefers-reduced-motion: no-preference) {
-    .rv.in.hn > .std,
-    .rv.in.hn > .names,
-    .rv.in.hn > .mute {
+    body.go .rv.in.hn > .std,
+    body.go .rv.in.hn > .names,
+    body.go .rv.in.hn > .mute {
         animation: textEnter .65s cubic-bezier(.22, 1, .36, 1) both;
     }
 
-    .rv.in.hn > .names {
+    body.go .rv.in.hn > .names {
         animation-delay: .08s;
     }
 
-    .rv.in.hn > .mute {
+    body.go .rv.in.hn > .mute {
         animation-delay: .16s;
     }
 
-    .rv.in.oval img {
+    body.go .rv.in.oval img {
         animation: imageEnter .9s cubic-bezier(.22, 1, .36, 1) both;
     }
 
@@ -1118,4 +1118,90 @@ button:focus,button:focus-visible,button:active{outline:none;box-shadow:none}
   #cover{height:100vh;height:100dvh;gap:18px}
   .env{margin-top:90px}
   .seal{width:64px;height:64px;font-size:1.45rem;padding:0}
+}
+
+* {
+    transition: transform .3s cubic-bezier(.22, 1, .36, 1),
+        opacity .3s ease,
+        filter .3s ease,
+        color .25s ease,
+        background-color .3s ease,
+        border-color .3s ease,
+        box-shadow .3s ease;
+}
+
+.bar button {
+    transition: transform .3s cubic-bezier(.22, 1, .36, 1),
+        background .3s ease,
+        filter .3s ease,
+        box-shadow .3s ease;
+}
+
+.oval div img,
+.gal .ph img {
+    transition: transform .35s cubic-bezier(.22, 1, .36, 1), filter .3s ease;
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .btn:hover,
+    .bar button:hover {
+        transform: translateY(-3px) scale(1.03);
+    }
+
+    .pill:hover {
+        transform: translateY(-2px) scale(1.03);
+    }
+
+    .card:hover,
+    .cd div:hover,
+    .tl li:hover,
+    .gal > div:hover {
+        transform: translateY(-3px) scale(1.015);
+    }
+
+    :is(h1, h2, h3, p, small, .std, .mute, .ct):hover {
+        transform: translateY(-2px);
+        text-shadow: 0 4px 16px rgba(255, 193, 213, .22);
+    }
+
+    main img:hover {
+        transform: scale(1.025);
+        filter: brightness(1.06) saturate(1.04);
+    }
+
+    .env:hover {
+        filter: brightness(1.04);
+    }
+
+    .seal:not(:disabled):hover {
+        transform: translate(-50%, -50%) scale(1.06);
+        box-shadow: 0 0 0 5px rgba(245, 167, 193, .18), 0 8px 22px rgba(0, 0, 0, .24);
+    }
+
+}
+
+@media (hover: none) and (prefers-reduced-motion: no-preference) {
+    :is(h1, h2, h3, p, small, .std, .mute, .ct):active {
+        transform: translateY(1px) scale(.99);
+        text-shadow: 0 3px 12px rgba(255, 193, 213, .2);
+    }
+
+    main img:active {
+        transform: scale(.97);
+        filter: brightness(1.1) saturate(1.05);
+    }
+
+    .env:active {
+        filter: brightness(1.08);
+    }
+
+    .seal:not(:disabled):active {
+        transform: translate(-50%, -50%) scale(.94);
+    }
+
+    .gal > div:active .ph img,
+    .oval:active img {
+        transform: scale(.97);
+        filter: brightness(1.1) saturate(1.05);
+    }
 }
